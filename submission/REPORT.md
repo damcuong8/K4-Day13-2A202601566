@@ -21,8 +21,8 @@
 
 - Evidence correlation ID: mỗi request sinh `correlation_id` dạng `req-<8-hex>` (mới hoặc lấy từ header `x-request-id` nếu client gửi sẵn), bind vào `structlog` contextvars nên mọi log dòng của cùng request đều mang chung ID; ID cũng được trả về qua response header `x-request-id` + `x-response-time-ms`. Xem [evidence/correlation_id_headers.txt](evidence/correlation_id_headers.txt) và [evidence/sample_logs_correlation_and_pii.jsonl](evidence/sample_logs_correlation_and_pii.jsonl).
 - Evidence PII redaction: input test chứa email và số điện thoại VN bị thay bằng `[REDACTED_EMAIL]`/`[REDACTED_PHONE_VN]` trước khi ghi log; bổ sung thêm pattern `passport_vn` và `address_vn`. Kiểm chứng độc lập bằng `scripts/validate_logs.py` cho `Potential PII leaks detected: 0`. Xem [evidence/pii_redaction_before_after.md](evidence/pii_redaction_before_after.md).
-- Evidence trace waterfall:
-- Giải thích một span đáng chú ý:
+- Evidence trace waterfall: ![Trace Waterfall](evidence/tracing.png)
+- Giải thích một span đáng chú ý: Trong waterfall trace, span `resolve_prompt` cho thấy thời gian trễ (latency) khi gọi API lên Langfuse để tải prompt template về. Span `llm_call` đóng vai trò quan trọng nhất, hiển thị không chỉ thời gian phản hồi thực tế của model mà còn kèm theo số lượng token đầu vào/đầu ra, giúp dễ dàng tính toán chi phí (cost).
 
 ## 4. Prompt versioning
 
