@@ -4,7 +4,7 @@
 
 - Tên nhóm: 2A202601566
 - Repository URL: https://github.com/damcuong8/K4-Day13-2A202601566
-- Commit SHA cuối: c6b200b (Bản cập nhật báo cáo hoàn chỉnh của cả 4 thành viên)
+- Commit SHA cuối: 565fcaf (Hoàn tất toàn bộ bài nộp Day 13 Observability + 10 điểm Bonus)
 - Thành viên và vai trò:
   - Lý Nhật Huy (2A202601450) — Logging & PII: correlation ID, metadata, JSON log, redaction
   - Nguyễn Vũ Hà An (2A202601692) — Tracing & Prompt Version: traces, metadata, prompt v1/v2, label/rollback
