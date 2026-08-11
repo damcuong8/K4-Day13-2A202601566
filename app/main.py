@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from structlog.contextvars import bind_contextvars
 
 from .agent import LabAgent
@@ -40,6 +40,19 @@ async def health() -> dict:
 @app.get("/metrics")
 async def metrics() -> dict:
     return snapshot()
+
+
+@app.get("/dashboard", response_class=HTMLResponse)
+async def dashboard_ui():
+    from .dashboard import DASHBOARD_HTML
+    return HTMLResponse(content=DASHBOARD_HTML)
+
+
+@app.get("/api/dashboard/stats")
+async def dashboard_stats():
+    from .dashboard import compute_dashboard_stats
+    return compute_dashboard_stats()
+
 
 
 @app.post("/chat", response_model=ChatResponse)
