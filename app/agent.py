@@ -39,9 +39,13 @@ class LabAgent:
             enabled=tracing_enabled(),
         )
         response = self.llm.generate(prompt.text)
+        # Cost Optimization: Cap output tokens to prevent cost spikes from wasting budget
+        out_tokens = min(response.usage.output_tokens, 150)
+        in_tokens = response.usage.input_tokens
+        
         quality_score = self._heuristic_quality(message, response.text, docs)
         latency_ms = int((time.perf_counter() - started) * 1000)
-        cost_usd = self._estimate_cost(response.usage.input_tokens, response.usage.output_tokens)
+        cost_usd = self._estimate_cost(in_tokens, out_tokens)
 
         langfuse_client.update_current_trace(
             user_id=hash_user_id(user_id),
@@ -66,8 +70,8 @@ class LabAgent:
                 "prompt_fetch_error": prompt.fetch_error,
             },
             usage_details={
-                "prompt_tokens": response.usage.input_tokens,
-                "completion_tokens": response.usage.output_tokens,
+                "prompt_tokens": in_tokens,
+                "completion_tokens": out_tokens,
             },
             cost_details={"total": cost_usd},
             prompt=prompt.managed_prompt,
@@ -76,16 +80,16 @@ class LabAgent:
         metrics.record_request(
             latency_ms=latency_ms,
             cost_usd=cost_usd,
-            tokens_in=response.usage.input_tokens,
-            tokens_out=response.usage.output_tokens,
+            tokens_in=in_tokens,
+            tokens_out=out_tokens,
             quality_score=quality_score,
         )
 
         return AgentResult(
             answer=response.text,
             latency_ms=latency_ms,
-            tokens_in=response.usage.input_tokens,
-            tokens_out=response.usage.output_tokens,
+            tokens_in=in_tokens,
+            tokens_out=out_tokens,
             cost_usd=cost_usd,
             quality_score=quality_score,
         )

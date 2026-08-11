@@ -65,3 +65,17 @@ Với mỗi thành viên, ghi rõ nhiệm vụ và link commit/PR tương ứng.
 | Nguyễn Vũ Hà An (2A202601692) | Tracing & Prompt Version: Cấu hình kết nối Langfuse (`.env`), tạo script test tự động (`scripts/test_role2.py`), thao tác tạo prompt v1/v2 trên Langfuse UI, kiểm thử gán nhãn `production`/`candidate` để app tự động kéo prompt mới. | `4e20623` — https://github.com/damcuong8/K4-Day13-2A202601566/commit/4e20623 | Langfuse tách biệt quản lý prompt khỏi source code, giúp A/B testing và rollback cực nhanh bằng label mà không cần deploy lại. Decorator `@observe` giúp bắt trọn vòng đời trace/generation của LLM, rất tiện để debug độ trễ hoặc lỗi prompt. |
 | Đàm Việt Cường (2A202601566) | Dashboard, SLO & Alerting: Kiểm tra dashboard contract `config/dashboard.yaml` đạt `6/6 panel` với `validate_dashboard.py`, định nghĩa Latency/Availability/Quality SLOs và soạn thảo 3 Alert Rules kèm Runbook cho hệ thống trong `docs/alerts.md` | `fa17d97` — https://github.com/damcuong8/K4-Day13-2A202601566/commit/fa17d97 | Hiểu cách liên kết từ Dashboard Metrics tới Traces và Logs; cách xác định các chỉ số SLOs (P95 latency, Error rate %, Quality score) thực tế cho hệ thống AI LLM và xây dựng Runbook ứng phó sự cố theo 3 bước điều tra tiêu chuẩn. |
 | Nguyễn Văn Hiệp (2A202601488) | QA & Incident Analysis: Chạy load test dữ liệu sinh trace, thực hiện điều tra sự cố Challenge (`day13-k4-observability-v1`), liên kết 3 lớp Metrics → Traces → Logs xác định root cause `rag_slow`, đề xuất biện pháp khắc phục & phòng ngừa, và hoàn thiện file báo cáo nộp bài `REPORT.md`. | `c6b200b` — https://github.com/damcuong8/K4-Day13-2A202601566/commit/c6b200b | Nắm vững quy trình điều tra sự cố hệ thống AI qua chuỗi 3 tín hiệu Observability (Metrics phát hiện triệu chứng -> Traces khoanh vùng span chậm -> Logs cung cấp chứng cứ nguyên nhân gốc). |
+
+## 8. Bonus — Tối ưu chi phí, Audit Log & Custom Automation (+10 điểm)
+
+- **Cost Optimization:**
+  - Bật sự cố `cost_spike` (`python scripts/inject_incident.py --scenario cost_spike`).
+  - Ghi nhận chi phí ban đầu (Before): **$0.0847 USD** (8,007 output tokens).
+  - Triển khai giải pháp Token Budget Control trong `app/agent.py` (cap max output tokens = 150).
+  - Ghi nhận chi phí sau tối ưu (After): **$0.0211 USD** (1,340 output tokens) $\rightarrow$ **Tối ưu tiết kiệm 75.1% chi phí**.
+- **Audit Log (`data/audit.jsonl`):**
+  - Tích hợp tự động ghi các sự kiện quản trị (bật/tắt incident) vào file `data/audit.jsonl` theo cấu hình `AUDIT_LOG_PATH`.
+- **Custom Automation (`scripts/anomaly_detector.py`):**
+  - Đã viết script Python tự động quét file `data/logs.jsonl` phát hiện các dấu hiệu PII leak, vi phạm SLO Latency, Error Rate và Cost budget. Kết quả chạy tự động được xuất ra [submission/evidence/anomaly_detection_report.txt](evidence/anomaly_detection_report.txt).
+  - Xem báo cáo chi tiết phần Bonus tại [docs/bonus.md](../docs/bonus.md).
+

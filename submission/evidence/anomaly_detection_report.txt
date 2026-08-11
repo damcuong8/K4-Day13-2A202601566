@@ -1,0 +1,8 @@
+=== AUTOMATED ANOMALY DETECTION REPORT ===
+Analyzed Records: 57
+Total Requests: 20 | Failed: 0 (0.00%)
+Total Cost: $0.0384
+Total Anomalies Detected: 1
+--------------------------------------------------
+1. [WARNING] HIGH_LATENCY_ANOMALY (Correlation ID: req-5564a0ce)
+   -> Single request latency 3707ms exceeds threshold (3000ms)
