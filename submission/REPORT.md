@@ -4,12 +4,12 @@
 
 - Tên nhóm: 2A202601566
 - Repository URL: https://github.com/damcuong8/K4-Day13-2A202601566
-- Commit SHA cuối: a8f907f (Logging & PII — commit local, cần cập nhật lại sau khi cả nhóm hoàn thành và push bản cuối)
+- Commit SHA cuối: c6b200b (Bản cập nhật báo cáo hoàn chỉnh của cả 4 thành viên)
 - Thành viên và vai trò:
   - Lý Nhật Huy (2A202601450) — Logging & PII: correlation ID, metadata, JSON log, redaction
   - Nguyễn Vũ Hà An (2A202601692) — Tracing & Prompt Version: traces, metadata, prompt v1/v2, label/rollback
   - Đàm Việt Cường (2A202601566) — Dashboard, SLO & Alerting: 6 panel, threshold, SLO, alert và runbook
-  - QA & Incident Analyst — QA, Load test, Điều tra Challenge (CP3) và Hoàn thiện báo cáo
+  - Nguyễn Văn Hiệp (2A202601488) — QA & Incident Analyst — QA, Load test, Điều tra Challenge (CP3) và Hoàn thiện báo cáo
 
 ## 2. Kết quả kỹ thuật
 
@@ -64,4 +64,4 @@ Với mỗi thành viên, ghi rõ nhiệm vụ và link commit/PR tương ứng.
 | Lý Nhật Huy (2A202601450) | Logging & PII: sinh/propagate correlation ID qua middleware (`app/middleware.py`), enrich log với `user_id_hash`, `session_id`, `feature`, `model`, `env` (`app/main.py`), đăng ký processor scrub PII trước khi ghi log (`app/logging_config.py`), mở rộng `PII_PATTERNS` với `passport_vn`/`address_vn` và test tương ứng (`app/pii.py`, `tests/test_pii.py`) | `a8f907f` — https://github.com/damcuong8/K4-Day13-2A202601566/commit/a8f907f (link hoạt động sau khi `git push`) | Thứ tự processor của `structlog` quyết định dữ liệu có bị lộ hay không (phải scrub trước khi render JSON và ghi file); dùng `contextvars` để một correlation ID theo suốt vòng đời request mà không cần truyền tay qua từng hàm; cách kiểm chứng PII độc lập với chính implementation của mình bằng bộ regex riêng trong `validate_logs.py`. |
 | Nguyễn Vũ Hà An (2A202601692) | Tracing & Prompt Version: Cấu hình kết nối Langfuse (`.env`), tạo script test tự động (`scripts/test_role2.py`), thao tác tạo prompt v1/v2 trên Langfuse UI, kiểm thử gán nhãn `production`/`candidate` để app tự động kéo prompt mới. | `4e20623` — https://github.com/damcuong8/K4-Day13-2A202601566/commit/4e20623 | Langfuse tách biệt quản lý prompt khỏi source code, giúp A/B testing và rollback cực nhanh bằng label mà không cần deploy lại. Decorator `@observe` giúp bắt trọn vòng đời trace/generation của LLM, rất tiện để debug độ trễ hoặc lỗi prompt. |
 | Đàm Việt Cường (2A202601566) | Dashboard, SLO & Alerting: Kiểm tra dashboard contract `config/dashboard.yaml` đạt `6/6 panel` với `validate_dashboard.py`, định nghĩa Latency/Availability/Quality SLOs và soạn thảo 3 Alert Rules kèm Runbook cho hệ thống trong `docs/alerts.md` | `fa17d97` — https://github.com/damcuong8/K4-Day13-2A202601566/commit/fa17d97 | Hiểu cách liên kết từ Dashboard Metrics tới Traces và Logs; cách xác định các chỉ số SLOs (P95 latency, Error rate %, Quality score) thực tế cho hệ thống AI LLM và xây dựng Runbook ứng phó sự cố theo 3 bước điều tra tiêu chuẩn. |
-| Nguyễn Văn Hiệp (2A202601488) | QA & Incident Analysis: Chạy load test dữ liệu sinh trace, thực hiện điều tra sự cố Challenge (`day13-k4-observability-v1`), liên kết 3 lớp Metrics → Traces → Logs xác định root cause `rag_slow`, đề xuất biện pháp khắc phục & phòng ngừa, và hoàn thiện file báo cáo nộp bài `REPORT.md`. | | Nắm vững quy trình điều tra sự cố hệ thống AI qua chuỗi 3 tín hiệu Observability (Metrics phát hiện triệu chứng -> Traces khoanh vùng span chậm -> Logs cung cấp chứng cứ nguyên nhân gốc). |
+| Nguyễn Văn Hiệp (2A202601488) | QA & Incident Analysis: Chạy load test dữ liệu sinh trace, thực hiện điều tra sự cố Challenge (`day13-k4-observability-v1`), liên kết 3 lớp Metrics → Traces → Logs xác định root cause `rag_slow`, đề xuất biện pháp khắc phục & phòng ngừa, và hoàn thiện file báo cáo nộp bài `REPORT.md`. | `c6b200b` — https://github.com/damcuong8/K4-Day13-2A202601566/commit/c6b200b | Nắm vững quy trình điều tra sự cố hệ thống AI qua chuỗi 3 tín hiệu Observability (Metrics phát hiện triệu chứng -> Traces khoanh vùng span chậm -> Logs cung cấp chứng cứ nguyên nhân gốc). |
