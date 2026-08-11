@@ -38,7 +38,7 @@
 ## 5. Dashboard, SLO và alerts
 
 - Kết quả `validate_dashboard.py`: `HỢP LỆ: 6/6 panel có trong dashboard contract.` (xem [evidence/validate_dashboard_output.txt](evidence/validate_dashboard_output.txt) và [evidence/dashboard_and_alerts.md](evidence/dashboard_and_alerts.md)).
-- Evidence dashboard: Đã cấu hình đủ 6 panel theo contract `config/dashboard.yaml` gồm Latency (P50/P95/P99), Request Traffic, Error Rate & Breakdown, Cost over time, Input/Output Tokens và Quality Proxy score.
+- Evidence dashboard: Đã cấu hình đủ 6 panel theo contract `config/dashboard.yaml` gồm Latency (P50/P95/P99), Request Traffic, Error Rate & Breakdown, Cost over time, Input/Output Tokens và Quality Proxy score (xem ảnh chụp runtime tại [evidence/dashboard_runtime.png](evidence/dashboard_runtime.png)).
 - SLO đã chọn và lý do:
   1. **Latency SLO (P95 <= 3000ms):** Đảm bảo thời gian phản hồi nhanh cho người dùng khi chat với AI.
   2. **Availability SLO (Error Rate <= 2%):** Đảm bảo tính ổn định và sẵn sàng của hệ thống API.
