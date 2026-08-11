@@ -1,0 +1,22 @@
+Evidence: correlation ID sinh mới + trả về qua response header
+================================================================
+$ curl -s -D - -o /dev/null -X POST http://127.0.0.1:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"user_id":"u_evidence","session_id":"s_evidence","feature":"qa","message":"Evidence check for correlation id"}'
+
+HTTP/1.1 200 OK
+date: Tue, 11 Aug 2026 07:50:29 GMT
+server: uvicorn
+content-length: 269
+content-type: application/json
+x-request-id: req-40a45047
+x-response-time-ms: 157
+
+Evidence: correlation ID từ client (x-request-id) được giữ nguyên, không bị ghi đè
+====================================================================================
+$ curl -s -D - -o /dev/null -X POST http://127.0.0.1:8000/chat \
+  -H "Content-Type: application/json" \
+  -H "x-request-id: req-custom01" \
+  -d '{"user_id":"u_evidence","session_id":"s_evidence","feature":"qa","message":"Propagate incoming id"}'
+
+x-request-id: req-custom01
